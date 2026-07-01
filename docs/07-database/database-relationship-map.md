@@ -2,101 +2,131 @@
 
 ## Purpose
 
-This document provides a text-based relationship map for the first Universal Platform data model.
+This document provides a text-based relationship map for the MVP database model.
 
-It helps developers understand how Core, Engines, and Religious MVP records relate.
+It helps developers understand how Core, Engines, and the first Religious Domain tables relate before implementation begins.
 
 ## Principle
 
 Platform Core owns generic platform records.
 
+Capability Engines own reusable capability records.
+
 Domains own business-specific records.
 
 Organization-owned records must connect back to organization context.
 
-## Core Relationship Map
+## High-Level Core Map
 
 ```text
 users
   -> organization_users
-    -> organizations
+      -> organizations
+          -> organization_settings
+          -> organization_modules
+          -> organization_subscriptions
+          -> audit_logs
 ```
 
-A user can belong to many organizations.
-
-An organization can have many users.
-
-## Organization Foundation
+## Identity and Organization
 
 ```text
+users
+  -> user_credentials
+  -> user_sessions
+  -> organization_users
+
 organizations
   -> organization_users
   -> organization_settings
-  -> organization_modules
-  -> organization_subscriptions
-  -> audit_logs
+  -> organization_invitations
 ```
 
-Organization is the central tenant boundary for most business records.
+Meaning:
 
-## Permission Foundation
+- `users` are global identities.
+- `organization_users` connects users to organizations.
+- A user can belong to many organizations.
+- An organization can have many users.
+
+## Permission Relationships
 
 ```text
 permissions
   -> role_permissions
-    -> roles
-      -> organization_user_roles
-        -> organization_users
+      -> roles
+          -> organization_user_roles
+              -> organization_users
 ```
 
-Permissions define available actions.
+Meaning:
 
-Roles group permissions.
+- permissions are stable platform action keys.
+- roles group permissions.
+- organization users receive roles.
+- application services use Permission Engine to check actions.
 
-Organization users receive roles.
-
-## Module Registry Foundation
+## Module and Subscription Relationships
 
 ```text
 modules
   -> organization_modules
-    -> organizations
-```
+      -> organizations
 
-Module definitions are platform-level.
-
-Organization module records decide which modules are available to an organization.
-
-## Subscription Foundation
-
-```text
 subscription_plans
   -> plan_features
   -> plan_limits
   -> organization_subscriptions
-    -> organizations
+      -> organizations
 ```
 
-Plan records define commercial access.
+Meaning:
 
-Organization subscription records connect plans to organizations.
+- modules define available functional areas.
+- organization modules define what an organization has enabled.
+- subscription plans define commercial access and limits.
+- organization subscriptions connect organizations to plans.
 
-## Audit Foundation
+## Audit Relationship
 
 ```text
-audit_logs
-  -> organizations
-  -> users
+organizations
+  -> audit_logs
+
+users
+  -> audit_logs as actor_user_id
 ```
 
-Audit logs may reference actor user, organization, entity type, entity id, and metadata.
+Meaning:
+
+- audit logs may belong to an organization.
+- audit logs may record the acting user.
+- platform-level audit records may not always have an organization.
+
+## Engine Relationship Direction
+
+Capability engines usually reference organizations and records from domains or Core.
+
+Examples:
+
+```text
+organizations
+  -> payment_transactions
+  -> sms_wallets
+  -> sms_messages
+  -> storage_files
+  -> notification_records
+  -> workflow_tasks
+```
+
+Engines should not depend on Religious Domain tables directly unless the relationship is expressed through generic owner fields.
 
 ## Storage Foundation
 
 ```text
 storage_files
   -> organizations
-  -> users
+  -> users nullable
 ```
 
 File metadata should store organization context and owner information.
@@ -126,55 +156,68 @@ sms_messages
 
 SMS wallets and messages belong to organizations.
 
-## Religious Member Foundation
+## Religious Domain Map
 
 ```text
 organizations
+  -> religious_settings
   -> religious_members
-    -> religious_member_status_history
-```
-
-A religious member belongs to one organization context.
-
-A member may optionally link to a global user account later.
-
-## Religious Structure Foundation
-
-```text
-organizations
-  -> religious_congregations
-    -> religious_services
-    -> religious_groups
+      -> religious_member_status_history
       -> religious_group_members
-        -> religious_members
-```
-
-Congregations group people.
-
-Services represent scheduled gatherings.
-
-Groups represent smaller units such as departments, cells, and study groups.
-
-## Religious Visitor Foundation
-
-```text
-organizations
+      -> religious_attendance_records
   -> religious_visitors
-    -> religious_visitor_follow_ups
+      -> religious_visitor_follow_ups
+  -> religious_congregations
+      -> religious_services
+      -> religious_groups
+  -> religious_attendance_sessions
+      -> religious_attendance_records
 ```
 
-Visitors can later be converted to members through an application service.
-
-## Religious Attendance Foundation
+## Religious Structure Map
 
 ```text
-organizations
-  -> religious_attendance_sessions
-    -> religious_attendance_records
+religious_congregations
+  -> religious_services
+  -> religious_groups
+
+religious_groups
+  -> religious_group_members
       -> religious_members
 ```
 
-Attendance sessions may reference services, groups, events, or programs depending on attendance target type.
+Meaning:
+
+- congregations define people grouping.
+- services define scheduled gatherings.
+- groups define smaller units such as departments, cells, and study groups.
+- group membership connects members to groups.
+
+## Religious Attendance Map
+
+```text
+religious_attendance_sessions
+  -> religious_attendance_records
+      -> religious_members
+```
+
+Meaning:
+
+- attendance sessions define the event or meeting being tracked.
+- attendance records store each member's attendance status for that session.
+
+## Religious Visitor Conversion Map
+
+```text
+religious_visitors
+  -> religious_members
+```
+
+Meaning:
+
+- visitor conversion creates a member record.
+- conversion should be handled by an application service.
+- the relationship should be traceable through conversion metadata or history where implemented.
 
 ## Religious Giving Foundation Later
 
@@ -182,13 +225,21 @@ Attendance sessions may reference services, groups, events, or programs dependin
 organizations
   -> religious_giving_categories
   -> religious_giving_records
-    -> religious_members nullable
-    -> payment_transactions nullable
+      -> religious_members nullable
+      -> payment_transactions nullable
 ```
 
 Giving records belong to Religious Domain.
 
 Payment processing belongs to Payment Engine.
+
+## Ownership Rule
+
+Organization-owned tables must include organization context unless a documented exception exists.
+
+Core tables must not depend on Religious Domain tables.
+
+Domain tables may depend on Core identities, organizations, modules, and engine records through clear boundaries.
 
 ## Final Rule
 
