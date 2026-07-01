@@ -4,7 +4,7 @@
 
 This document locks the first MVP scope for Universal Platform.
 
-It exists to prevent scope creep and to keep implementation focused on proving the platform architecture.
+It exists to prevent scope creep and to keep implementation focused on proving the platform foundation.
 
 ## MVP Goal
 
@@ -19,22 +19,33 @@ The MVP should prove:
 - Religious Domain can be built without polluting Core
 - Flutter shell can support mobile and desktop/admin paths
 
+The MVP is not the final product.
+
+## MVP Includes: Backend Foundation
+
+The MVP includes:
+
+- Rust backend workspace
+- Axum API shell
+- configuration foundation
+- standard API response format
+- standard API error format
+- PostgreSQL connection foundation
+- Redis foundation where needed
+- health endpoint
+- first backend tests
+
 ## MVP Includes: Platform Core
 
 The MVP includes:
 
-- backend scaffold
-- configuration foundation
-- standard API response format
-- standard error response format
-- health endpoint
-- database foundation
 - Identity foundation
 - Organization foundation
-- Permission foundation
-- Audit foundation
+- organization membership
+- Permission Engine foundation
+- Audit Engine foundation
 - Module Registry foundation
-- basic plan and feature access foundation
+- Subscription or plan feature foundation
 
 ## MVP Includes: Engine Foundations
 
@@ -82,7 +93,7 @@ The MVP includes:
 The MVP excludes:
 
 - full marketplace
-- POS sales and inventory
+- full POS sales and inventory
 - full Finance module
 - full HR module
 - logistics and ride-hailing
@@ -95,6 +106,8 @@ The MVP excludes:
 - advanced analytics
 - AI insights
 - public marketplace mobile experience
+- public module marketplace
+- external developer SDK
 - app store production release automation
 
 ## Deferred Religious Features
@@ -108,6 +121,8 @@ Defer:
 - education program tree attendance
 - bulk imports
 - advanced communication campaigns
+- event ticketing
+- public organization page
 
 ## Scope Change Rule
 
