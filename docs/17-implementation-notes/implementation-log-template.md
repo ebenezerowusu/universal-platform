@@ -2,45 +2,96 @@
 
 ## Purpose
 
-This template can be copied when documenting important implementation milestones.
+Use this template for every implementation sprint or PR.
 
-It helps preserve decisions, deviations, and follow-up work as coding begins.
+The implementation log records what was built, what was intentionally avoided, and how architecture boundaries were preserved.
 
-## Template
+## Sprint / PR
 
 ```text
-# Implementation Log: <Title>
-
-## Date
-
-YYYY-MM-DD
-
-## Related Sprint / Phase
-
-Example: Sprint 1 Backend Scaffold
-
-## Related PR
-
-PR link or number.
+Sprint:
+Branch:
+PR:
+Date:
+Author:
+```
 
 ## Summary
 
-Briefly describe what was implemented.
-
-## Files / Areas Changed
-
-- area 1
-- area 2
+Describe what was implemented in this PR.
 
 ## Documents Consulted
 
-- doc 1
-- doc 2
+```text
+CLAUDE.md
+Relevant ADRs
+Relevant API contract
+Relevant readiness document
+Relevant traceability catalogue
+```
 
-## Architecture Decisions Confirmed
+## Files Changed
 
-- decision 1
-- decision 2
+```text
+<list files>
+```
+
+## Migrations Added
+
+```text
+<list migrations or none>
+```
+
+## API Routes Added Or Changed
+
+```text
+<list routes or none>
+```
+
+## UI Screens Added Or Changed
+
+```text
+<list screens or none>
+```
+
+## Tests Added
+
+```text
+<list tests>
+```
+
+## Checks Run
+
+```text
+cargo fmt
+cargo check
+cargo test
+flutter analyze placeholder
+other checks
+```
+
+## Architecture Boundaries Followed
+
+Confirm:
+
+```text
+[ ] Core remains domain-agnostic
+[ ] API handlers stay thin
+[ ] Business logic is placed in the correct service/module
+[ ] Tenant isolation is preserved
+[ ] Permission checks are enforced where applicable
+[ ] Sensitive actions are auditable where applicable
+[ ] Provider-specific logic stays behind adapters
+[ ] Configuration is not hardcoded
+```
+
+## Out Of Scope Items Avoided
+
+List what was intentionally not implemented.
+
+```text
+<items>
+```
 
 ## Deviations From Plan
 
@@ -50,36 +101,38 @@ State any difference from the documented plan.
 
 Explain why the deviation was necessary.
 
-## Tests / Checks Run
+## Events Added
 
-- check 1
-- check 2
+```text
+<events or none>
+```
 
-## Known Limitations
+## Audit Events Added
 
-- limitation 1
-
-## Follow-Up Work
-
-- follow-up 1
+```text
+<audit events or none>
+```
 
 ## Documentation Updates Needed
 
-- doc update 1
+```text
+<docs to update or none>
 ```
 
-## When To Use
+## Known Limitations
 
-Use this template for:
+- 
 
-- first backend scaffold
-- first migration set
-- first Identity implementation
-- first Organization implementation
-- first domain implementation
-- first Flutter scaffold
-- important architecture deviation
+## Follow-Up Work
+
+- 
+
+## Next Recommended Step
+
+```text
+<next implementation step>
+```
 
 ## Final Rule
 
-Implementation logs should explain what actually happened, especially when it differs from the original plan.
+Every implementation PR should leave a clear record of what changed, why it changed, what checks were run, and what remains.
