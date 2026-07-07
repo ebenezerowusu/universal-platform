@@ -10,6 +10,7 @@ It points coding agents, architects, and implementation teams to the correct doc
 
 ```text
 architecture documentation track complete
+production operations coverage added
 implementation should start now
 ```
 
@@ -24,11 +25,12 @@ The default next action is implementation, not more speculative documentation.
 5. `docs/06-development-standards/06-engineering-standards.md`
 6. `docs/07-database/07-database-strategy.md`
 7. `docs/08-security/08-security-standards.md`
-8. `docs/09-ai-development-handbook/09-ai-coding-agent-rules.md`
-9. `docs/10-adr/ADR-015-phase-0-documentation-complete-start-implementation.md`
-10. `docs/10-adr/ADR-016-architecture-documentation-closed-start-implementation.md`
-11. `docs/17-implementation-notes/implementation-cutover-guide.md`
-12. The API/domain/engine document relevant to the task being implemented
+8. `docs/05-infrastructure/production-operations-readiness-addendum.md`
+9. `docs/09-ai-development-handbook/09-ai-coding-agent-rules.md`
+10. `docs/10-adr/ADR-015-phase-0-documentation-complete-start-implementation.md`
+11. `docs/10-adr/ADR-016-architecture-documentation-closed-start-implementation.md`
+12. `docs/17-implementation-notes/implementation-cutover-guide.md`
+13. The API/domain/engine document relevant to the task being implemented
 
 ## Vision And Constitution
 
@@ -45,6 +47,7 @@ The default next action is implementation, not more speculative documentation.
 | Area | Document |
 |---|---|
 | Deployment strategy | `docs/05-infrastructure/05-deployment-strategy.md` |
+| Production operations readiness | `docs/05-infrastructure/production-operations-readiness-addendum.md` |
 | Engineering standards | `docs/06-development-standards/06-engineering-standards.md` |
 | Database strategy | `docs/07-database/07-database-strategy.md` |
 | Security standards | `docs/08-security/08-security-standards.md` |
