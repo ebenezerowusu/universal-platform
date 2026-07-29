@@ -1,0 +1,13 @@
+[package]
+name = "platform-organization"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+platform-core = { path = "../platform-core" }
+platform-identity = { path = "../platform-identity" }
+serde.workspace = true
+thiserror.workspace = true
