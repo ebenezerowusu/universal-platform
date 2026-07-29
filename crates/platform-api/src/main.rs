@@ -7,6 +7,7 @@ use axum::{
 };
 use platform_config::AppConfig;
 use platform_identity::IdentityUserStatus;
+use platform_organization::{OrganizationMembershipStatus, OrganizationStatus, OrganizationType};
 use serde::Serialize;
 use std::{net::SocketAddr, sync::Arc};
 use tracing::{error, info};
@@ -53,6 +54,15 @@ struct IdentityStatusData {
     planned_user_statuses: Vec<IdentityUserStatus>,
 }
 
+#[derive(Debug, Serialize)]
+struct OrganizationStatusData {
+    foundation: &'static str,
+    implemented_flows: Vec<&'static str>,
+    planned_organization_types: Vec<OrganizationType>,
+    planned_organization_statuses: Vec<OrganizationStatus>,
+    planned_membership_statuses: Vec<OrganizationMembershipStatus>,
+}
+
 #[tokio::main]
 async fn main() {
     init_tracing();
@@ -74,6 +84,7 @@ async fn main() {
         .route("/health", get(health))
         .route("/ready", get(ready))
         .route("/api/v1/identity/status", get(identity_status))
+        .route("/api/v1/organizations/status", get(organization_status))
         .with_state(state);
 
     let socket_address: SocketAddr = match bind_address.parse() {
@@ -153,6 +164,45 @@ async fn identity_status(State(_state): State<ApiState>) -> impl IntoResponse {
                 IdentityUserStatus::Active,
                 IdentityUserStatus::Suspended,
                 IdentityUserStatus::Deactivated,
+            ],
+        },
+        meta: ResponseMeta {
+            service: "platform-api",
+            trace_id: "not-wired-yet",
+        },
+    })
+}
+
+async fn organization_status(State(_state): State<ApiState>) -> impl IntoResponse {
+    Json(ApiResponse {
+        success: true,
+        data: OrganizationStatusData {
+            foundation: "organization-tenant-foundation-placeholder",
+            implemented_flows: vec![
+                "organization tenant model primitives",
+                "organization membership model primitives",
+                "repository boundary",
+                "organization service boundary",
+            ],
+            planned_organization_types: vec![
+                OrganizationType::Generic,
+                OrganizationType::Religious,
+                OrganizationType::Commerce,
+                OrganizationType::NonProfit,
+                OrganizationType::Education,
+                OrganizationType::Other,
+            ],
+            planned_organization_statuses: vec![
+                OrganizationStatus::PendingSetup,
+                OrganizationStatus::Active,
+                OrganizationStatus::Suspended,
+                OrganizationStatus::Deactivated,
+            ],
+            planned_membership_statuses: vec![
+                OrganizationMembershipStatus::Invited,
+                OrganizationMembershipStatus::Active,
+                OrganizationMembershipStatus::Suspended,
+                OrganizationMembershipStatus::Revoked,
             ],
         },
         meta: ResponseMeta {
