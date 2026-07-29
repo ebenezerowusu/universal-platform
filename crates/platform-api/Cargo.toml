@@ -10,6 +10,7 @@ repository.workspace = true
 axum.workspace = true
 platform-config = { path = "../platform-config" }
 platform-core = { path = "../platform-core" }
+platform-identity = { path = "../platform-identity" }
 serde.workspace = true
 serde_json.workspace = true
 tokio.workspace = true
