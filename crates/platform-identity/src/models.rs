@@ -75,3 +75,32 @@ impl IdentityUser {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn email_is_normalized() {
+        let email = EmailAddress::new("  USER@Example.COM  ").expect("email should be valid");
+
+        assert_eq!(email.as_str(), "user@example.com");
+    }
+
+    #[test]
+    fn invalid_email_is_rejected() {
+        let result = EmailAddress::new("not-an-email");
+
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn new_identity_user_starts_pending_verification() {
+        let email = EmailAddress::new("user@example.com").expect("email should be valid");
+        let hash = PasswordHash::from_hash("hashed-password-placeholder");
+
+        let user = IdentityUser::new_pending(email, hash);
+
+        assert_eq!(user.status, IdentityUserStatus::PendingVerification);
+    }
+}
