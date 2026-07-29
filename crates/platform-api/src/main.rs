@@ -6,6 +6,7 @@ use axum::{
     Json, Router,
 };
 use platform_config::AppConfig;
+use platform_identity::IdentityUserStatus;
 use serde::Serialize;
 use std::{net::SocketAddr, sync::Arc};
 use tracing::{error, info};
@@ -45,6 +46,13 @@ struct ReadyData {
     storage: &'static str,
 }
 
+#[derive(Debug, Serialize)]
+struct IdentityStatusData {
+    foundation: &'static str,
+    implemented_flows: Vec<&'static str>,
+    planned_user_statuses: Vec<IdentityUserStatus>,
+}
+
 #[tokio::main]
 async fn main() {
     init_tracing();
@@ -65,6 +73,7 @@ async fn main() {
     let app = Router::new()
         .route("/health", get(health))
         .route("/ready", get(ready))
+        .route("/api/v1/identity/status", get(identity_status))
         .with_state(state);
 
     let socket_address: SocketAddr = match bind_address.parse() {
@@ -126,6 +135,31 @@ async fn ready(State(state): State<ApiState>) -> impl IntoResponse {
             trace_id: "not-wired-yet",
         },
     }))
+}
+
+async fn identity_status(State(_state): State<ApiState>) -> impl IntoResponse {
+    Json(ApiResponse {
+        success: true,
+        data: IdentityStatusData {
+            foundation: "identity-foundation-placeholder",
+            implemented_flows: vec![
+                "identity model primitives",
+                "repository boundary",
+                "password hashing boundary",
+                "identity service boundary",
+            ],
+            planned_user_statuses: vec![
+                IdentityUserStatus::PendingVerification,
+                IdentityUserStatus::Active,
+                IdentityUserStatus::Suspended,
+                IdentityUserStatus::Deactivated,
+            ],
+        },
+        meta: ResponseMeta {
+            service: "platform-api",
+            trace_id: "not-wired-yet",
+        },
+    })
 }
 
 fn init_tracing() {

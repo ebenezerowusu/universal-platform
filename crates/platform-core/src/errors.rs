@@ -13,6 +13,9 @@ pub enum PlatformError {
     #[error("not found: {0}")]
     NotFound(String),
 
+    #[error("conflict: {0}")]
+    Conflict(String),
+
     #[error("permission denied: {0}")]
     PermissionDenied(String),
 
