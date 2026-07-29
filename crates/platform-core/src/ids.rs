@@ -36,5 +36,6 @@ macro_rules! uuid_newtype {
 }
 
 uuid_newtype!(OrganizationId);
+uuid_newtype!(OrganizationMembershipId);
 uuid_newtype!(UserId);
 uuid_newtype!(TraceId);
