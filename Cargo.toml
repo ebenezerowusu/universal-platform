@@ -4,7 +4,8 @@ members = [
     "crates/platform-core",
     "crates/platform-config",
     "crates/platform-infra",
-    "crates/platform-identity"
+    "crates/platform-identity",
+    "crates/platform-organization"
 ]
 resolver = "2"
 
