@@ -40,6 +40,7 @@ The default next action is implementation, not more speculative documentation.
 | Platform constitution | `docs/01-platform-constitution/01-platform-constitution.md` |
 | Architecture overview | `docs/02-architecture/02-platform-architecture.md` |
 | Domain overview | `docs/03-domains/03-domain-overview.md` |
+| Religious giving and pledges requirements | `docs/03-domains/religious-giving-pledges-requirements.md` |
 | Capability engine overview | `docs/04-capability-engines/04-engine-overview.md` |
 
 ## Development, Infrastructure, Security, And Database
